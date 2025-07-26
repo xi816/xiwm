@@ -9,12 +9,19 @@ int main(void) {
   XEvent ev;
   if(!(dpy = XOpenDisplay(0x0))) return 1;
   XGrabKey(dpy, XKeysymToKeycode(dpy, XStringToKeysym("F1")), Mod4Mask, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync);
+  XGrabKey(dpy, XKeysymToKeycode(dpy, XStringToKeysym("C")), Mod4Mask|ShiftMask, DefaultRootWindow(dpy), True, GrabModeAsync, GrabModeAsync);
   XGrabButton(dpy, 1, Mod4Mask, DefaultRootWindow(dpy), True, ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
   XGrabButton(dpy, 3, Mod4Mask, DefaultRootWindow(dpy), True, ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
   start.subwindow = None;
   for(;;) {
     XNextEvent(dpy, &ev);
-    if(ev.type == KeyPress && ev.xkey.subwindow != None) XRaiseWindow(dpy, ev.xkey.subwindow);
+    if (ev.type == KeyPress) {
+      if (ev.xkey.keycode == XKeysymToKeycode(dpy, XStringToKeysym("F1"))) {
+        XRaiseWindow(dpy, ev.xkey.subwindow);
+      } else if (ev.xkey.keycode == XKeysymToKeycode(dpy, XStringToKeysym("C")) && (ev.xkey.state & Mod4Mask) && (ev.xkey.state & ShiftMask)) {
+        if (ev.xkey.subwindow) XDestroyWindow(dpy, ev.xkey.subwindow);
+      }
+    }
     else if(ev.type == ButtonPress && ev.xbutton.subwindow != None) {
       XGetWindowAttributes(dpy, ev.xbutton.subwindow, &attr); start = ev.xbutton;
     }

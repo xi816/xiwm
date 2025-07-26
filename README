@@ -1,0 +1,8 @@
+-========== Xiwm ==========-
+
+Compile with ./build (gcc required)
+Use with xbindkeys for a fucking usable wm
+Use xbindkeys and xinitrc from my dotfiles
+
+-==========================-
+

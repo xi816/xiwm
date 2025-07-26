@@ -1,5 +1,5 @@
-gcc tinywm.c -o tinywm --std=c89 -lX11
+gcc xiwm.c -o xiwm --std=c89 -lX11
 if [ "$1" == "install" ]; then
-  sudo install tinywm /usr/local/bin/
+  sudo install xiwm /usr/local/bin/
 fi
 
